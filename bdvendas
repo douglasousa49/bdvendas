@@ -1,0 +1,93 @@
+CREATE DATABASE BDVENDAS;
+
+USE BDVENDAS;
+
+/***** TABELA CLIENTES *****/
+CREATE TABLE tb_clientes (
+  id int auto_increment primary key,
+  nome varchar(100),
+  rg varchar (30),
+  cpf varchar (20),
+  email varchar(200),
+  senha varchar(100),
+  telefone varchar(30),
+  celular varchar(30),
+  cep varchar(100),
+  endereco varchar (255),
+  numero int,
+  complemento varchar (200),
+  bairro varchar (100),
+  cidade varchar (100),
+  uf varchar (2)
+);
+/*****************/
+
+/***** TABELA PRODUTOS *****/
+CREATE TABLE tb_produtos (
+  id int auto_increment primary key,
+  codigoProduto int,
+  nomeProduto varchar(100),
+  descricao varchar(100),
+  preco decimal (10,2),
+  estoque int
+);
+/*****************/
+
+/***** TABELA VENDAS *****/
+CREATE TABLE tb_vendas (
+  id int auto_increment primary key,
+  cliente_id int,
+  data_venda datetime,
+  total_venda decimal (10,2),
+  observacoes text,
+
+  FOREIGN KEY (cliente_id) REFERENCES tb_clientes(id)
+);
+/*****************/
+
+/***** TABELA ITENS_VENDAS *****/
+CREATE TABLE tb_itensvendas (
+  id int auto_increment primary key,
+  venda_id int,
+  produto_id int,
+  qtd int,
+  subtotal decimal (10,2),
+
+  FOREIGN KEY (venda_id) REFERENCES tb_vendas(id),
+  FOREIGN KEY (produto_id) REFERENCES tb_produtos(id)
+);
+/*****************/
+
+CREATE USER 'admin@cosmeticos.com'@'%' IDENTIFIED BY 'adm123';
+
+GRANT ALL ON *.* TO 'admin@cosmeticos.com'@'%' WITH GRANT OPTION;
+
+flush privileges;
+
+CREATE USER 'usuario'@'%' IDENTIFIED BY 'usuario123';
+
+GRANT ALL ON tb_clientes TO 'admin@cosmeticos.com'@'%';
+
+GRANT ALL ON tb_clientes TO 'usuario'@'%';
+
+select * from tb_clientes;
+
+select * from tb_produtos;
+
+INSERT INTO tb_clientes (nome, rg, cpf, email, senha, telefone, celular, cep, endereco, numero, complemento, bairro, cidade) VALUES ('aaaa', 'bbbbbb', 'cccccc', 'ddddd', 'eeee', 'ffff', 'gggg', 'hhhh', 'iiii', 10, 'kkkk', 'llll', 'mmmm');
+
+ALTER TABLE tb_clientes ADD uf CHAR(2);
+
+ALTER TABLE tb_clientes DROP estado;
+
+DELETE FROM tb_clientes WHERE id = 13;
+
+SELECT user, host FROM mysql.user;
+
+ALTER TABLE tb_produtos
+ADD COLUMN estoque INT;
+
+ALTER TABLE tb_produtos
+DROP qtd_estoque;
+
+SELECT id, nome, email, celular FROM tb_clientes;
